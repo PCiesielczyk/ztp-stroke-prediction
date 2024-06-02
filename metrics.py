@@ -1,11 +1,10 @@
-from pyspark.ml.evaluation import BinaryClassificationEvaluator
-import matplotlib.pyplot as plt
 import logging
 import os
-from pyspark.ml.functions import vector_to_array
 
-from pyspark.sql.functions import col, log, expr
-from pyspark.sql.types import DoubleType
+import matplotlib.pyplot as plt
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.functions import vector_to_array
+from pyspark.sql.functions import col, log
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s',

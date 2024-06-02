@@ -2,13 +2,11 @@ import logging
 
 from pyspark.ml import Pipeline
 from pyspark.ml.classification import LogisticRegression
-from pyspark.ml.evaluation import BinaryClassificationEvaluator
 from pyspark.ml.feature import VectorAssembler
 from pyspark.sql import SparkSession
-from pyspark.ml.tuning import ParamGridBuilder, TrainValidationSplit
 
-from preprocessing import encode_dataframe
 from metrics import print_metrics
+from preprocessing import encode_dataframe
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s',
@@ -44,7 +42,7 @@ if __name__ == '__main__':
         labelCol=label
     )
 
-    logger.info("Training model and searching for best hyperparameters...")
+    logger.info("Training model...")
     model = lr_model.fit(train_data)
 
     lr_predictions = model.transform(test_data)
