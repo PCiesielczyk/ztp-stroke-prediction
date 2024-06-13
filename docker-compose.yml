@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  spark-master:
+    image: myspark
+    command: bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - 9090:8080
+      - 7077:7077
+    volumes:
+      - ./spark-scripts:/data/spark-scripts
+      - ./datasets_temp:/data/datasets_temp
+      - ./datasets:/data/datasets
+      - ./metrics:/data/metrics
+
+  spark-worker:
+    image: myspark
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 1
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_MASTER_URL: spark://spark-master:7077
+    volumes:
+      - ./spark-scripts:/data/spark-scripts
+      - ./datasets_temp:/data/datasets_temp
+      - ./datasets:/data/datasets
+      - ./metrics:/data/metrics
+
+  spark-submit:
+    image: bitnami/spark:latest
+    depends_on:
+      - spark-master
+      - spark-worker
+    command: /opt/bitnami/spark/bin/spark-submit --master spark://spark-master:7077 /data/spark-scripts/load_dataset_and_train.py
+    volumes:
+      - ./spark-scripts:/data/spark-scripts
+      - ./datasets_temp:/data/datasets_temp
+      - ./datasets:/data/datasets
+      - ./metrics:/data/metrics
