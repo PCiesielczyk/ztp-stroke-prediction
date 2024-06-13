@@ -3,6 +3,7 @@ version: '3.7'
 services:
   spark-master:
     image: myspark
+    container_name: spark-master
     command: bin/spark-class org.apache.spark.deploy.master.Master
     ports:
       - 9090:8080
@@ -29,14 +30,14 @@ services:
       - ./datasets:/data/datasets
       - ./metrics:/data/metrics
 
-  spark-submit:
-    image: bitnami/spark:latest
-    depends_on:
-      - spark-master
-      - spark-worker
-    command: /opt/bitnami/spark/bin/spark-submit --master spark://spark-master:7077 /data/spark-scripts/load_dataset_and_train.py
-    volumes:
-      - ./spark-scripts:/data/spark-scripts
-      - ./datasets_temp:/data/datasets_temp
-      - ./datasets:/data/datasets
-      - ./metrics:/data/metrics
+  # spark-submit:
+  #   image: bitnami/spark:latest
+  #   depends_on:
+  #     - spark-master
+  #     - spark-worker
+  #   command: /opt/bitnami/spark/bin/spark-submit --master spark://spark-master:7077 /data/spark-scripts/load_dataset_and_train.py
+  #   volumes:
+  #     - ./spark-scripts:/data/spark-scripts
+  #     - ./datasets_temp:/data/datasets_temp
+  #     - ./datasets:/data/datasets
+  #     - ./metrics:/data/metrics
