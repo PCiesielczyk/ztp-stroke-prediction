@@ -12,11 +12,17 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger('metrics')
 
 label = "label"
+current_directory = os.getcwd()
+metrics_path = 'metrics'
+metrics_txt = 'metrics.txt'
+metrics_relative = os.path.join(current_directory, metrics_path, metrics_txt)
 
 
 def create_directory(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
+
+create_directory(metrics_path)
 
 
 def print_and_plot_roc_curve(training_summary, predictions):
@@ -25,9 +31,10 @@ def print_and_plot_roc_curve(training_summary, predictions):
 
     logger.info(f"Area under ROC curve: {area_under_curve}")
 
-    lrROC = training_summary.roc.toPandas()
+    with open(metrics_relative, 'a') as file:
+        file.write(f"Area under ROC curve: {area_under_curve}\n")
 
-    create_directory('metrics')
+    lrROC = training_summary.roc.toPandas()
 
     plt.figure(figsize=(8, 6))
     plt.plot(lrROC['FPR'], lrROC['TPR'])
@@ -55,10 +62,18 @@ def print_accuracy_precision_recall_f1(training_summary):
     logger.info("Accuracy: %s\nFPR: %s\nTPR: %s\nF-measure: %s\nPrecision: %s\nRecall: %s"
                 % (accuracy, falsePositiveRate, truePositiveRate, fMeasure, precision, recall))
 
+    with open(metrics_relative, 'a') as file:
+        file.write("Accuracy: %s\nFPR: %s\nTPR: %s\nF-measure: %s\nPrecision: %s\nRecall: %s\n"
+                % (accuracy, falsePositiveRate, truePositiveRate, fMeasure, precision, recall))
+
 
 def print_coefficients_intercept(model):
     logger.info("Coefficients: \n" + str(model.coefficientMatrix))
     logger.info("Intercept: " + str(model.interceptVector))
+
+    with open(metrics_relative, 'a') as file:
+        file.write("Coefficients: \n" + str(model.coefficientMatrix) + '\n'
+                   "Intercept: " + str(model.interceptVector) + '\n')
 
 
 def print_loss(predictions):
@@ -73,6 +88,9 @@ def print_loss(predictions):
     )
     average_log_loss = log_loss.agg({"log_loss": "mean"}).collect()[0]["avg(log_loss)"]
     logger.info(f"Average loss: {average_log_loss}")
+
+    with open(metrics_relative, 'a') as file:
+        file.write(f"Average loss: {average_log_loss}")
 
 
 def print_metrics(model, predictions):
