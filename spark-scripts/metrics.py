@@ -27,14 +27,14 @@ def print_and_plot_roc_curve(training_summary, predictions):
 
     lrROC = training_summary.roc.toPandas()
 
-    create_directory('metrics')
+    create_directory('/data/metrics')
 
     plt.figure(figsize=(8, 6))
     plt.plot(lrROC['FPR'], lrROC['TPR'])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
     plt.title('ROC Curve')
-    plt.savefig('metrics/ROC_curve.png')
+    plt.savefig('/data/metrics/ROC_curve.png')
 
 
 def print_accuracy_precision_recall_f1(training_summary):
@@ -43,7 +43,7 @@ def print_accuracy_precision_recall_f1(training_summary):
     plt.plot(pr['recall'], pr['precision'])
     plt.ylabel('Precision')
     plt.xlabel('Recall')
-    plt.savefig('metrics/precision_recall.png')
+    plt.savefig('/data/metrics/precision_recall.png')
 
     accuracy = training_summary.accuracy
     falsePositiveRate = training_summary.weightedFalsePositiveRate
