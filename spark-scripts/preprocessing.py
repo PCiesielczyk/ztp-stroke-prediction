@@ -24,7 +24,6 @@ def convert_to_numerical(df: DataFrame) -> DataFrame:
 
 
 def oversample_minority_class(df: DataFrame) -> DataFrame:
-    ratio = 1
     minority_count = df.filter(col('stroke') == 1).count()
     majority_count = df.filter(col('stroke') == 0).count()
 
@@ -32,7 +31,7 @@ def oversample_minority_class(df: DataFrame) -> DataFrame:
 
     logger.info(f"Initial Majority:Minority ratio is {balance_ratio:.2f}:1")
 
-    oversampled_minority = df.filter(col('stroke') == 1).sample(withReplacement=True, fraction=(balance_ratio / ratio),
+    oversampled_minority = df.filter(col('stroke') == 1).sample(withReplacement=True, fraction=balance_ratio,
                                                                 seed=88)
     oversampled_df = df.filter(col('stroke') == 0).union(oversampled_minority)
     return oversampled_df
