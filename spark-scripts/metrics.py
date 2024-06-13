@@ -12,10 +12,9 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger('metrics')
 
 label = "label"
-current_directory = os.getcwd()
 metrics_path = 'metrics'
 metrics_txt = 'metrics.txt'
-metrics_relative = os.path.join(current_directory, metrics_path, metrics_txt)
+metrics_relative = os.path.join('/data', metrics_path, metrics_txt)
 
 
 def create_directory(directory):

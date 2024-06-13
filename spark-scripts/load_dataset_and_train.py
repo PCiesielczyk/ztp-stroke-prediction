@@ -10,7 +10,7 @@ from pyspark.sql.types import StructType, StructField, StringType
 from metrics import print_metrics
 from preprocessing import encode_dataframe
 
-POLL_INTERVAL = "60 seconds"
+POLL_INTERVAL = "10 seconds"
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s',
