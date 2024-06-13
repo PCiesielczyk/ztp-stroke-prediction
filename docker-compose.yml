@@ -13,6 +13,7 @@ services:
       - ./datasets_temp:/data/datasets_temp
       - ./datasets:/data/datasets
       - ./metrics:/data/metrics
+      - ./model:/data/model
 
   spark-worker:
     image: myspark
@@ -29,6 +30,7 @@ services:
       - ./datasets_temp:/data/datasets_temp
       - ./datasets:/data/datasets
       - ./metrics:/data/metrics
+      - ./model:/data/model
 
   # spark-submit:
   #   image: bitnami/spark:latest

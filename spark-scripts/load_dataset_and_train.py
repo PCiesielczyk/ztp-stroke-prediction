@@ -74,7 +74,7 @@ def process_stream(data_frame, epoch_id):
     lr_predictions = model.transform(test_data)
     print_metrics(model, lr_predictions)
 
-    model.write().overwrite().save('model')
+    model.write().overwrite().save('/data/model')
 
 
 if __name__ == '__main__':
